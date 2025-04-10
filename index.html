@@ -1,0 +1,321 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Report</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="progress-bar"></div>
+    <div class="container">
+        <header class="fade-in">
+            <div class="header-decoration"></div>
+            <h1>Research Report Title</h1>
+            <p class="author"><i class="fas fa-user"></i> Author Name</p>
+            <p class="institution"><i class="fas fa-university"></i> Institution Name</p>
+            <div class="header-decoration"></div>
+        </header>
+
+        <section id="abstract" class="slide-in">
+            <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+            <h2>1. Abstract</h2>
+            <p>Your abstract content goes here. This should be a brief summary of your entire research work, typically 150-250 words.</p>
+        </section>
+
+        <section id="toc" class="slide-in">
+            <div class="section-icon"><i class="fas fa-list"></i></div>
+            <h2>2. Table of Contents</h2>
+            <nav>
+                <ul>
+                    <li><a href="#abstract"><i class="fas fa-chevron-right"></i> 1. Abstract</a></li>
+                    <li><a href="#toc"><i class="fas fa-chevron-right"></i> 2. Table of Contents</a></li>
+                    <li><a href="#introduction"><i class="fas fa-chevron-right"></i> 3. Introduction</a></li>
+                    <li><a href="#literature"><i class="fas fa-chevron-right"></i> 4. Literature Review / Related Work</a></li>
+                    <li><a href="#methodology"><i class="fas fa-chevron-right"></i> 5. Methodology & Implementation</a></li>
+                    <li><a href="#results"><i class="fas fa-chevron-right"></i> 6. Results and Discussion</a></li>
+                    <li><a href="#demo"><i class="fas fa-chevron-right"></i> 7. Demo of Simulation and Hardware</a></li>
+                    <li><a href="#conclusion"><i class="fas fa-chevron-right"></i> 8. Conclusion and Future Work</a></li>
+                    <li><a href="#references"><i class="fas fa-chevron-right"></i> 9. References</a></li>
+                </ul>
+            </nav>
+        </section>
+
+        <section id="introduction" class="slide-in">
+            <div class="section-icon"><i class="fas fa-info-circle"></i></div>
+            <h2>3. Introduction</h2>
+            <p>Your introduction content goes here. Provide background information, research objectives, and the significance of your study.</p>
+        </section>
+
+        <section id="literature" class="slide-in">
+            <div class="section-icon"><i class="fas fa-book"></i></div>
+            <h2>4. Literature Review / Related Work</h2>
+            <p>Present your literature review and related work here. Discuss previous research and establish the theoretical framework for your study.</p>
+        </section>
+
+        <section id="methodology" class="slide-in">
+            <div class="section-icon"><i class="fas fa-cogs"></i></div>
+            <h2>5. Methodology & Implementation</h2>
+            <p>Describe your research methodology and implementation details here. Include any experimental setup, procedures, or technical specifications.</p>
+        </section>
+
+        <section id="results" class="slide-in">
+            <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+            <h2>6. Results and Discussion</h2>
+            <p>Present your findings and discuss their implications. Include any relevant data, charts, or analysis.</p>
+        </section>
+
+        <section id="demo" class="slide-in">
+            <div class="section-icon"><i class="fas fa-desktop"></i></div>
+            <h2>7. Demo of Simulation and Hardware</h2>
+            <p>Include demonstrations of your simulations and/or hardware implementations here. You can add images, videos, or interactive elements.</p>
+        </section>
+
+        <section id="conclusion" class="slide-in">
+            <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+            <h2>8. Conclusion and Future Work</h2>
+            <p>Summarize your key findings and discuss potential future research directions or improvements.</p>
+        </section>
+
+        <section id="references" class="slide-in">
+            <div class="section-icon"><i class="fas fa-quote-right"></i></div>
+            <h2>9. References</h2>
+            <ul class="references-list">
+                <li><i class="fas fa-bookmark"></i> Reference 1</li>
+                <li><i class="fas fa-bookmark"></i> Reference 2</li>
+                <li><i class="fas fa-bookmark"></i> Reference 3</li>
+            </ul>
+        </section>
+    </div>
+
+    <button id="scroll-top" class="scroll-top-btn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Scroll progress bar
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.querySelector(".progress-bar").style.width = scrolled + "%";
+            
+            // Show/hide scroll-to-top button
+            let scrollBtn = document.querySelector(".scroll-top-btn");
+            if (winScroll > 300) {
+                scrollBtn.style.display = "block";
+            } else {
+                scrollBtn.style.display = "none";
+            }
+        };
+
+        // Smooth scroll to top
+        document.querySelector(".scroll-top-btn").addEventListener("click", function() {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        });
+
+        // Intersection Observer for slide-in animations
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            },
+            { threshold: 0.1 }
+        );
+
+        document.querySelectorAll('.slide-in').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Report</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Playfair+Display:wght@400;700&family=Fira+Code&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="progress-bar"></div>
+    <div class="container">
+        <header class="fade-in">
+            <div class="header-decoration"></div>
+            <h1>Research Report Title</h1>
+            <p class="author"><i class="fas fa-user"></i> Author Name</p>
+            <p class="institution"><i class="fas fa-university"></i> Institution Name</p>
+            <div class="header-decoration"></div>
+        </header>
+
+        <section id="abstract" class="slide-in">
+            <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+            <h2>1. Abstract</h2>
+            <p>Your abstract content goes here. This should be a brief summary of your entire research work, typically 150-250 words.</p>
+        </section>
+
+        <section id="toc" class="slide-in">
+            <div class="section-icon"><i class="fas fa-list"></i></div>
+            <h2>2. Table of Contents</h2>
+            <nav>
+                <ul>
+                    <li><a href="#abstract"><i class="fas fa-chevron-right"></i> 1. Abstract</a></li>
+                    <li><a href="#toc"><i class="fas fa-chevron-right"></i> 2. Table of Contents</a></li>
+                    <li><a href="#introduction"><i class="fas fa-chevron-right"></i> 3. Introduction</a></li>
+                    <li><a href="#literature"><i class="fas fa-chevron-right"></i> 4. Literature Review / Related Work</a></li>
+                    <li><a href="#methodology"><i class="fas fa-chevron-right"></i> 5. Methodology & Implementation</a></li>
+                    <li><a href="#results"><i class="fas fa-chevron-right"></i> 6. Results and Discussion</a></li>
+                    <li><a href="#demo"><i class="fas fa-chevron-right"></i> 7. Demo of Simulation and Hardware</a></li>
+                    <li><a href="#conclusion"><i class="fas fa-chevron-right"></i> 8. Conclusion and Future Work</a></li>
+                    <li><a href="#references"><i class="fas fa-chevron-right"></i> 9. References</a></li>
+                </ul>
+            </nav>
+        </section>
+
+        <section id="introduction" class="slide-in">
+            <div class="section-icon"><i class="fas fa-info-circle"></i></div>
+            <h2>3. Introduction</h2>
+            <p>Your introduction content goes here. Provide background information, research objectives, and the significance of your study.</p>
+            <blockquote>
+                Include important quotes or key points here to emphasize significant aspects of your research.
+            </blockquote>
+        </section>
+
+        <section id="literature" class="slide-in">
+            <div class="section-icon"><i class="fas fa-book"></i></div>
+            <h2>4. Literature Review / Related Work</h2>
+            <p>Present your literature review and related work here. Discuss previous research and establish the theoretical framework for your study.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Author</th>
+                        <th>Year</th>
+                        <th>Key Findings</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Author 1</td>
+                        <td>2023</td>
+                        <td>Key finding description</td>
+                    </tr>
+                    <tr>
+                        <td>Author 2</td>
+                        <td>2022</td>
+                        <td>Key finding description</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="methodology" class="slide-in">
+            <div class="section-icon"><i class="fas fa-cogs"></i></div>
+            <h2>5. Methodology & Implementation</h2>
+            <p>Describe your research methodology and implementation details here. Include any experimental setup, procedures, or technical specifications.</p>
+            <pre><code>// Example code block
+function analyze(data) {
+    return data.map(item => ({
+        ...item,
+        analyzed: true
+    }));
+}</code></pre>
+        </section>
+
+        <section id="results" class="slide-in">
+            <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+            <h2>6. Results and Discussion</h2>
+            <p>Present your findings and discuss their implications. Include any relevant data, charts, or analysis.</p>
+        </section>
+
+        <section id="demo" class="slide-in">
+            <div class="section-icon"><i class="fas fa-desktop"></i></div>
+            <h2>7. Demo of Simulation and Hardware</h2>
+            <p>Include demonstrations of your simulations and/or hardware implementations here. You can add images, videos, or interactive elements.</p>
+        </section>
+
+        <section id="conclusion" class="slide-in">
+            <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+            <h2>8. Conclusion and Future Work</h2>
+            <p>Summarize your key findings and discuss potential future research directions or improvements.</p>
+        </section>
+
+        <section id="references" class="slide-in">
+            <div class="section-icon"><i class="fas fa-quote-right"></i></div>
+            <h2>9. References</h2>
+            <ul class="references-list">
+                <li><i class="fas fa-bookmark"></i> Reference 1</li>
+                <li><i class="fas fa-bookmark"></i> Reference 2</li>
+                <li><i class="fas fa-bookmark"></i> Reference 3</li>
+            </ul>
+        </section>
+    </div>
+
+    <button id="scroll-top" class="scroll-top-btn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Scroll progress bar
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.querySelector(".progress-bar").style.width = scrolled + "%";
+            
+            // Show/hide scroll-to-top button
+            let scrollBtn = document.querySelector(".scroll-top-btn");
+            if (winScroll > 300) {
+                scrollBtn.style.display = "block";
+            } else {
+                scrollBtn.style.display = "none";
+            }
+        };
+
+        // Smooth scroll to top
+        document.querySelector(".scroll-top-btn").addEventListener("click", function() {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        });
+
+        // Intersection Observer for slide-in animations
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            },
+            { threshold: 0.1 }
+        );
+
+        document.querySelectorAll('.slide-in').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
