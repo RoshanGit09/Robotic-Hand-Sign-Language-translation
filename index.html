@@ -201,13 +201,15 @@ The robotic hand is actuated using servos connected to tendons that emulate huma
 
 </p>
             <blockquote>
-                ASL Alphabet Display: A user can input a character or word, and the hand will animate the corresponding ASL letter using predefined tendon configurations.
+                <ol>
+                <li>ASL Alphabet Display: A user can input a character or word, and the hand will animate the corresponding ASL letter using predefined tendon configurations.</li>
 
-Speech to Text to ASL: Using Whisper for high-accuracy transcription, coupled with FFT-based voice activity detection, the system captures live speech, processes it into text, and decomposes it into ASL alphabet animations.
+                <li>Speech to Text to ASL: Using Whisper for high-accuracy transcription, coupled with FFT-based voice activity detection, the system captures live speech, processes it into text, and decomposes it into ASL alphabet animations.</li>
 
-Gesture Mimicry: With MediaPipe’s real-time hand landmark detection, the system extracts 3D joint angles from a user’s hand shown in front of a webcam and replicates the gesture using inverse kinematics on the robot.
+                <li>Gesture Mimicry: With MediaPipe’s real-time hand landmark detection, the system extracts 3D joint angles from a user’s hand shown in front of a webcam and replicates the gesture using inverse kinematics on the robot.</li>
 
-ASL Recognition via Machine Learning: A Random Forest classifier is trained to recognize ASL letters from joint angles extracted from MediaPipe, allowing the robot to interpret what letter the user is signing.
+                <li>ASL Recognition via Machine Learning: A Random Forest classifier is trained to recognize ASL letters from joint angles extracted from MediaPipe, allowing the robot to interpret what letter the user is signing.</li>
+                </ol>
             </blockquote>
         </section>
 
