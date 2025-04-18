@@ -193,9 +193,21 @@
         <section id="introduction" class="slide-in">
             <div class="section-icon"><i class="fas fa-info-circle"></i></div>
             <h2>3. Introduction</h2>
-            <p>Your introduction content goes here. Provide background information, research objectives, and the significance of your study.</p>
+            <p>Communication is not only a fundamental human need but also a bridge to education, employment, healthcare, and social inclusion. For individuals who are deaf or hard-of-hearing, American Sign Language (ASL) serves as a critical tool for daily interaction. However, the use of ASL is not widespread among the general population, often leading to miscommunication and social exclusion for ASL users. This disparity becomes even more apparent in time-critical environments such as hospitals, classrooms, or customer service settings where interpreters are not always available. Bridging this gap requires the fusion of intelligent systems with human communication modalities.
+
+Recent developments in robotics, computer vision, and speech recognition have opened up new possibilities for building assistive systems that can understand and reproduce sign language. This project presents a multi-functional, tendon-driven robotic hand that acts as a bidirectional ASL translator. The system is designed not only to generate ASL signs based on spoken or typed input but also to recognize hand gestures shown by a user and map them to corresponding ASL alphabets.
+
+The robotic hand is actuated using servos connected to tendons that emulate human finger flexion. The system architecture is modular and comprises four core features:
+
+</p>
             <blockquote>
-                Include important quotes or key points here to emphasize significant aspects of your research.
+                ASL Alphabet Display: A user can input a character or word, and the hand will animate the corresponding ASL letter using predefined tendon configurations.
+
+Speech to Text to ASL: Using Whisper for high-accuracy transcription, coupled with FFT-based voice activity detection, the system captures live speech, processes it into text, and decomposes it into ASL alphabet animations.
+
+Gesture Mimicry: With MediaPipe’s real-time hand landmark detection, the system extracts 3D joint angles from a user’s hand shown in front of a webcam and replicates the gesture using inverse kinematics on the robot.
+
+ASL Recognition via Machine Learning: A Random Forest classifier is trained to recognize ASL letters from joint angles extracted from MediaPipe, allowing the robot to interpret what letter the user is signing.
             </blockquote>
         </section>
 
