@@ -154,6 +154,22 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
     </script>
+
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            startup: {
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady().then(() => {
+                        console.log('MathJax typesetting complete');
+                    });
+                }
+            }
+        };
+    </script>
 </head>
 
 <body>
@@ -299,7 +315,9 @@
         <section id="methodology" class="slide-in">
             <div class="section-icon"><i class="fas fa-cogs"></i></div>
             <h2>Methodology</h2>
-            <center><h2>Speech To Text (VAD)</h2></center>
+            <center>
+                <h2>Speech To Text (VAD)</h2>
+            </center>
 
             <p>In this project, we focus on identifying speech presence within audio signals using signal processing
                 techniques. The methodology involves analyzing short chunks of audio and computing energy specifically
@@ -376,25 +394,301 @@
                 \]
             </p>
 
-            <h3>Why the Range 85–3800 Hz?</h3>
+            <h3>Why the Range 85-3800 Hz?</h3>
             <p>This frequency band is based on the typical spectrum of human speech. Most vocal energy (especially
                 vowels and voiced consonants) lies in this range. Frequencies below 85 Hz usually contain environmental
                 noise, while those above 3800 Hz mostly include sibilance and high-frequency noise.</p>
 
-            <h3>Conclusion</h3>
-            <p>This approach enables reliable and efficient detection of speech activity by focusing on relevant
-                frequency components and minimizing noise. It is simple to implement and effective for real-time audio
-                processing.</p>
 
-            <h3>3.6 Hand Control Process</h3>
-            <ol>
-                <li>User speaks a word or sentence</li>
-                <li>Speech is converted to text</li>
-                <li>Each letter is converted into target finger positions</li>
-                <li>IK calculates pull → servo angle</li>
-                <li>Servo angle sent to Arduino</li>
-                <li>Fingers move and show the ASL letter</li>
-            </ol>
+            <div class="hand-control-process"
+                style="margin: 20px 0; padding: 10px; border: 1px solid #ffffff; border-radius: 5px; background-color: #ffffff;">
+                <center> <h2 >Hand
+                    Control Process</h2></center>
+                <ol
+                    style="font-family: 'Roboto', sans-serif; font-size: 1em; color: #555; line-height: 1.6; padding-left: 20px;">
+                    <li style="margin-bottom: 5px;">User speaks a word or sentence</li>
+                    <li style="margin-bottom: 5px;">Speech is converted to text</li>
+                    <li style="margin-bottom: 5px;">Each letter is converted into target finger positions</li>
+                    <li style="margin-bottom: 5px;">IK calculates pull → servo angle</li>
+                    <li style="margin-bottom: 5px;">Servo angle sent to Arduino</li>
+                    <li style="margin-bottom: 5px;">Fingers move and show the ASL letter</li>
+                </ol>
+            </div>
+
+
+
+            <h3>3.1 Forward Kinematics</h3>
+            <p>
+                Forward kinematics means calculating the position of the fingertip based on how much each joint is bent
+                (joint angles).
+                We use rotation matrices to model how the finger segments move when each joint rotates.
+            </p>
+            <p>
+                Suppose we have 3 joints (like in a finger), and each joint can rotate around the X-axis.
+                We use a rotation matrix to rotate each link. The rotation matrix for rotation about the X-axis is:
+            </p>
+            <p>
+                \[
+                R_x(\theta) =
+                \begin{bmatrix}
+                1 & 0 & 0 \\
+                0 & \cos\theta & -\sin\theta \\
+                0 & \sin\theta & \cos\theta
+                \end{bmatrix}
+                \]
+            </p>
+            <p>
+                The position of each joint is calculated step-by-step using this formula:
+            </p>
+            <p>
+                \[
+                P_i = P_{i-1} + R_1 R_2 \dots R_i \cdot (L_i \cdot \text{direction})
+                \]
+            </p>
+            <ul>
+                <li>\( P_i \): position of the i-th joint</li>
+                <li>\( R_i \): rotation matrix of the i-th joint</li>
+                <li>\( L_i \): length of the i-th finger segment</li>
+                <li>Direction: usually along the Y-axis \([0, 1, 0]\)</li>
+            </ul>
+
+            <h3>3.2 Inverse Kinematics</h3>
+            <p>
+                Inverse Kinematics is the opposite. Here, we start with a desired fingertip position (target),
+                and we try to find the joint angles or tendon pull value that can move the finger to that position.
+            </p>
+            <p>
+                Since our fingers are controlled by tendons, we use a single pull value \( p \) (in cm) to control all
+                joints in that finger.
+                Each joint rotates depending on this pull value, using a ratio.
+            </p>
+            <p>
+                Joint angle is calculated from pull using this formula:
+            </p>
+            <p>
+                \[
+                \theta_i = \left( \frac{p}{\text{max_pull}} \right) \cdot r_i \cdot \theta_{i,\text{max}}
+                \]
+            </p>
+            <ul>
+                <li>\( p \): current tendon pull (in cm)</li>
+                <li>\( \text{max_pull} \): maximum allowed pull (e.g., 2.5 cm)</li>
+                <li>\( r_i \): ratio for each joint (e.g., 1.0, 0.7, 0.5)</li>
+                <li>\( \theta_{i,\text{max}} \): maximum angle that the joint can reach</li>
+            </ul>
+
+            <h3>3.3 Optimization to Solve Inverse Kinematics</h3>
+            <p>
+                To find the correct pull \( p \), we use an optimization method called L-BFGS-B.
+                It tries different pull values and checks how close the fingertip reaches the target position using
+                forward kinematics.
+            </p>
+            <p>
+                The objective (or cost) function to minimize is:
+            </p>
+            <p>
+                $$
+                \min_P \left\| \vec{p}_{\text{tip}}(P) - \vec{p}_{\text{target}} \right\|^2
+                $$
+            </p>
+
+            <p>
+                Where:<br>
+                \( \vec{p}_{\text{tip}}(P) \): Fingertip position as a function of pull \( P \)<br>
+                \( \vec{p}_{\text{target}} \): Desired fingertip position<br>
+            </p>
+            <p>
+                This function calculates the square of the distance between the current fingertip position and the
+                target.
+                The optimizer finds the best \( p \) that gives the smallest distance.
+            </p>
+            <p>
+                In Python, we used this line of code to find the optimal \( p \):
+            </p>
+            <pre><code>
+result = minimize(objective, x0=[0.5 * max_pull], bounds=[(0.0, max_pull)], method='L-BFGS-B')
+</code></pre>
+
+            <h3>3.4 Optimization using L-BFGS-B</h3>
+            <p> In our project, we need to find the right tendon pull (p) so that the robotic fingertip reaches a target
+                position in 3D space. To do this, we use an optimization method called <b>L-BFGS-B</b>. </p>
+            <h4>What is BFGS?</h4>
+            <p> BFGS stands for <b>Broyden–Fletcher–Goldfarb–Shanno</b>, which is a popular optimization algorithm used
+                to find the minimum of a function. It is especially useful when we don’t know the exact formula of the
+                function, but we can still calculate its value and gradient (how steep it is). </p>
+            <p> BFGS is a <b>quasi-Newton method</b>, which means it tries to guess how the function curves (second
+                derivatives) without computing them exactly. It does this by building an approximation of the Hessian
+                matrix (which represents curvature). </p>
+            <h4>Why use L-BFGS-B?</h4>
+            <p> In our case, we only have <b>one variable</b> per finger — the pull amount \( p \). But:
+            <ul>
+                <li>We want the pull to stay within a certain range (e.g., 0 cm to 2.5 cm).</li>
+                <li>We want fast and memory-efficient optimization.</li>
+            </ul> That's why we use <b>L-BFGS-B</b>, which stands for: <ul>
+                <li><b>L</b>: Limited-memory (uses less RAM)</li>
+                <li><b>BFGS</b>: Based on the BFGS method</li>
+                <li><b>B</b>: Handles Bound constraints (like min and max pull values)</li>
+            </ul>
+            </p>
+            <h4>How does it work?</h4>
+            <p> The optimizer tries different values of \( p \), each time calculating the error between the fingertip's
+                current position and the desired target position: </p>
+            <p> \( f(p) = \left\| \text{tip\_position}(p) - \text{target\_position} \right\|^2 \) </p>
+            <p> It also estimates how much the error changes if we increase or decrease \( p \). This is called the
+                <b>gradient</b>:
+            </p>
+            <p> \( f'(p) = \frac{df}{dp} \) </p>
+            <p> Using this gradient and its own memory of past steps, L-BFGS-B decides the next value of \( p \) to try.
+                It continues this process until the error is very small or doesn't improve much anymore. </p>
+            <h4>Why is this useful in our project?</h4>
+            <p> Since we don’t know the exact function that maps pull to fingertip position (it depends on rotation and
+                geometry), L-BFGS-B helps us <b>find the best pull amount without solving the math manually</b>. </p>
+            <p> We used this method in Python like this: </p>
+            <pre><code> result = minimize(objective, x0=[0.5 * max_pull], bounds=[(0.0, max_pull)], method='L-BFGS-B') </code></pre>
+            <p> This line tries to find the pull value that makes the fingertip match the target position, while staying
+                between 0 and max_pull. </p>
+
+
+
+
+            <h3>3.5 Pull to Servo Conversion</h3>
+            <p>
+                Once we find the correct pull value, we need to convert it to a servo motor angle.
+                Each servo pulls a string around a horn with a known radius. The formula to convert pull to servo angle
+                is:
+            </p>
+            <p>
+                \[
+                \text{Servo\_Angle} = \left( \frac{p}{2\pi r} \right) \cdot 360^\circ
+                \]
+            </p>
+            <ul>
+                <li>\( p \): tendon pull in cm</li>
+                <li>\( r \): radius of the servo horn (1.4 cm in our setup)</li>
+            </ul>
+            <p>
+                We send this servo angle to an Arduino, which moves the corresponding servo motor.
+                This pulls the tendon, and the finger bends to the right position.
+            </p>
+
+
+
+
+
+            <h3>Simulation Environment</h3>
+
+            <p>
+                The simulation of the tendon-driven robotic hand was developed using Python with the help of the
+                <code>matplotlib</code> and <code>numpy</code> libraries. It provides a fully interactive 3D
+                visualization that models both the forward and inverse kinematics of a robotic finger. Each finger is
+                simulated independently to reflect realistic motion based on tendon pulls.
+            </p>
+
+            <h4>1. Finger Structure and Coordinate System</h4>
+            <p>
+                Each finger is modeled as a 3-link serial kinematic chain, where each link represents a bone segment
+                (proximal, middle, distal phalanges). The motion of each joint is simulated as rotation around the
+                X-axis, and each joint angle is derived from the tendon pull using a linear mapping:
+            </p>
+
+            <p>
+                \[
+                \theta_i = \alpha \cdot r_i \cdot \theta_{i,\text{max}}, \quad \alpha =
+                \min\left(\frac{P}{P_{\text{max}}}, 1.0\right)
+                \]
+            </p>
+
+            <p>
+                Here, \( \alpha \) is the normalized pull ratio, \( r_i \) is the pull-to-angle ratio for joint \( i \),
+                and \( \theta_{i,\text{max}} \) is the maximum rotation angle in radians.
+            </p>
+
+            <h4>2. Visualization in 3D Space</h4>
+            <p>
+                The simulation uses a 3D coordinate space with the following layout:
+            </p>
+            <ul>
+                <li><strong>X-axis</strong>: Horizontal spacing between fingers</li>
+                <li><strong>Y-axis</strong>: Upward direction of finger bending</li>
+                <li><strong>Z-axis</strong>: Depth, used for bending in the simulated plane</li>
+            </ul>
+
+            <p>
+                Each finger's base is placed along the X-axis with fixed spacing. Joint positions are computed
+                sequentially using rotation matrices:
+            </p>
+
+            <p>
+                \[
+                \vec{p}_{i+1} = \vec{p}_i + R_1 R_2 \cdots R_i \cdot \vec{l}_i
+                \]
+            </p>
+
+            <p>
+                Where \( \vec{p}_i \) is the position of the current joint, \( R_i \) is the rotation matrix for the
+                \(i\)-th joint, and \( \vec{l}_i \) is the local link vector along the Y-axis.
+            </p>
+
+            <h4>3. Interactive Controls</h4>
+            <p>
+                The simulation GUI includes the following interactive elements:
+            </p>
+            <ul>
+                <li><strong>Sliders</strong> for each finger to manually adjust the tendon pull (0 to 2.5 cm).</li>
+                <li><strong>Text boxes</strong> to enter a 3D target position and select a specific finger (0–4).</li>
+                <li><strong>Solve button</strong> to run inverse kinematics and compute the required pull for the given
+                    target.</li>
+            </ul>
+
+            <p>
+                These elements enable both manual and automated control of finger movements, allowing users to visualize
+                how different tendon pulls affect the joint angles and fingertip position.
+            </p>
+
+            <h4>4. Inverse Kinematics Solver</h4>
+            <p>
+                When a target position is entered, the simulation calls the inverse kinematics (IK) solver, which uses
+                the L-BFGS-B optimization method to minimize the error between the simulated fingertip position and the
+                desired target:
+            </p>
+
+            <p>
+                \[
+                \min_P \left\| \vec{p}_{\text{tip}}(P) - \vec{p}_{\text{target}} \right\|^2
+                \]
+            </p>
+
+            <p>
+                The solver returns the optimal tendon pull \( P \) and the resulting joint angles. This value is then
+                applied to update the slider and finger position in the simulation.
+            </p>
+
+            <h4>5. Real-Time Feedback</h4>
+            <p>
+                The simulation dynamically displays:
+            </p>
+            <ul>
+                <li>The 3D finger segment positions as blue lines and joints.</li>
+                <li>The fingertip position as a red dot.</li>
+                <li>The target position (if any) as a green dot.</li>
+                <li>Live joint angles and pull length for each finger.</li>
+            </ul>
+
+            <h4>6. Purpose and Benefits</h4>
+            <p>
+                This simulation serves multiple purposes:
+            </p>
+            <ul>
+                <li>Validates the kinematic model before hardware implementation.</li>
+                <li>Allows testing of inverse kinematics under various scenarios.</li>
+                <li>Facilitates debugging and understanding of tendon-driven actuation.</li>
+            </ul>
+
+            <p>
+                By integrating theory with visualization, the simulation bridges the gap between algorithm design and
+                real-world deployment on robotic hardware.
+            </p>
+
 
             <h3>1. System Integration and Testing</h3>
             <p>All three modules — mechanical, computational, and control — were integrated into a unified control
@@ -418,78 +712,6 @@
                 <li>External power supply for servo stability.</li>
                 <li>Tendon-routing system for precise articulation.</li>
             </ul>
-
-            <h4>1.2 Mathematical Modeling</h4>
-            <p>A simplified kinematic model was implemented for accurate control of each finger.</p>
-            <p><strong>Forward Kinematics (FK):</strong></p>
-            <pre>
-        P = Base + R(θ₁)l₁ + R(θ₁ + θ₂)l₂ + R(θ₁ + θ₂ + θ₃)l₃
-            </pre>
-            <p>Where θ₁, θ₂, θ₃ are joint angles, l₁, l₂, l₃ are segment lengths, and R(θ) is the rotation matrix.</p>
-
-            <p><strong>Inverse Kinematics (IK):</strong></p>
-            <pre>
-        minₚ || FK(p) - Pₜₐᵣget ||
-            </pre>
-            <p>The solution minimizes positional error using Python’s <code>scipy.optimize.minimize</code>.</p>
-
-            <h4>1.3 Pull to Servo Angle Conversion</h4>
-            <pre>
-        θₛₑᵣᵥₒ = (p × 360) / (2πr)
-            </pre>
-            <p>Where p is tendon pull length and r = 1.4 cm (servo horn radius).</p>
-
-            <h4>1.4 Simulation and Visualization</h4>
-            <p>Python-based simulation validated the system before hardware use. Matplotlib displayed finger positions;
-                sliders and text inputs adjusted and solved IK problems interactively.</p>
-
-            <h4>1.5 Arduino Control System</h4>
-            <p>Arduino Mega received servo angles via serial and adjusted PWM signals in real-time for accurate finger
-                motion.</p>
-
-            <h3>2. Speech-to-ASL Translation</h3>
-
-            <h4>2.1 Audio Capture and Denoising</h4>
-            <ul>
-                <li>Microphone captures voice with ambient noise.</li>
-                <li>FFT filters non-speech frequencies.</li>
-                <li>VAD identifies speech segments.</li>
-                <li>Whisper AI transcribes audio into text.</li>
-            </ul>
-
-            <h4>2.2 Text-to-ASL Mapping</h4>
-            <ul>
-                <li>Transcribed text decomposed into characters.</li>
-                <li>Each character mapped to its ASL gesture.</li>
-                <li>Forward Kinematics computes servo positions.</li>
-                <li>Arduino executes hand movements.</li>
-            </ul>
-
-            <h3>3. Text-to-ASL Translation</h3>
-
-            <h4>3.1 Text Input</h4>
-            <p>Users input text via serial or GUI interface.</p>
-
-            <h4>3.2 ASL Gesture Mapping</h4>
-            <p>Each character matches a predefined ASL gesture.</p>
-
-            <h4>3.3 Servo Position Calculation</h4>
-            <p>Forward Kinematics calculates joint angles.</p>
-
-            <h4>3.4 Gesture Execution</h4>
-            <p>Arduino sends PWM signals for ASL gestures letter by letter.</p>
-
-            <h3>4. Hand Mimicry</h3>
-
-            <h4>4.1 Gesture Capture</h4>
-            <p>Camera records real-time human ASL gestures.</p>
-
-            <h4>4.2 Gesture Recognition</h4>
-            <p>Computer Vision and Machine Learning classify gestures.</p>
-
-            <h4>4.3 Gesture Replication</h4>
-            <p>Recognized gestures are translated into servo positions and mimicked by the robotic hand in real-time.
-            </p>
         </section>
 
 
@@ -509,7 +731,44 @@
         <section id="conclusion" class="slide-in">
             <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
             <h2>8. Conclusion and Future Work</h2>
-            <p>Summarize your key findings and discuss potential future research directions or improvements.</p>
+
+            <h3>Conclusion</h3>
+            <p>This project successfully developed a 3D-printed robotic hand capable of translating speech, text, and
+                visual ASL gestures into corresponding hand signs. By integrating servo motor control, forward
+                kinematics, speech recognition, and computer vision, the system offers an effective tool for bridging
+                communication gaps between hearing and deaf individuals. The results demonstrate the potential of
+                combining robotics and AI to create accessible, real-time assistive communication technologies.
+            </p>
+
+            <h3>Future Work</h3>
+            <p>While this project successfully demonstrates a functional prototype for translating speech, text, and
+                gestures into American Sign Language (ASL) using a robotic hand, several improvements and expansions are
+                planned for future development.</p>
+
+                <h3>1.Voice Recognition Model</h3>
+
+               <p> Currently, the system relies on OpenAI’s Whisper model for speech-to-text conversion. As a next step, we
+                aim to develop a custom voice recognition system using deep learning neural networks. This will provide
+                greater flexibility, offline capability, and customization for specific accents, dialects, or
+                specialized vocabularies relevant to ASL users.</p>
+
+               <h3> 2. Enhanced Finger Dexterity and Degrees of Freedom</h3>
+
+                 <p>In addition, the mechanical design of the robotic hand can be further enhanced by increasing the degrees
+                of freedom (DOF) for each finger. This will allow for more natural, precise, and flexible finger
+                movements, which not only improves the clarity of ASL gestures but also opens the possibility for
+                expanding the system into a multi-purpose robotic hand capable of tasks such as object manipulation,
+                grasping, and pick-and-place operations.</p>
+
+               <h3> 3.EEG-Based Brain-Computer Interface (BCI) Integration</h3>
+
+                <p>An ambitious and transformative extension of this project involves integrating EEG
+                (Electroencephalography) brain signal processing. By capturing and interpreting neural activity related
+                to specific thoughts or words, the system could allow users to translate thought patterns directly into
+                ASL gestures via the robotic hand. This integration would enable a non-verbal, non-physical mode of
+                communication, providing an invaluable tool for individuals with severe physical disabilities or
+                speech impairments.</p>
+
         </section>
 
         <section id="references" class="slide-in">
