@@ -141,14 +141,21 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Research Report</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Playfair+Display:wght@400;700&family=Fira+Code&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Playfair+Display:wght@400;700&family=Fira+Code&display=swap"
+        rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
 </head>
+
 <body>
     <div class="progress-bar"></div>
     <div class="container">
@@ -163,29 +170,44 @@
         <section id="abstract" class="slide-in">
             <div class="section-icon"><i class="fas fa-file-alt"></i></div>
             <h2>Abstract</h2>
-    <p>In an increasingly interconnected world, inclusivity and accessibility in communication remain critical goals of technological advancement. American Sign Language (ASL) serves as a primary mode of communication for millions within the deaf and hard-of-hearing communities. However, the language barrier often leads to isolation and reduced access to essential services for ASL users. This project proposes a comprehensive robotic system that bridges this gap through a tendon-driven robotic hand capable of both generating and interpreting ASL letters.</p>
+            <p>In an increasingly interconnected world, inclusivity and accessibility in communication remain critical
+                goals of technological advancement. American Sign Language (ASL) serves as a primary mode of
+                communication for millions within the deaf and hard-of-hearing communities. However, the language
+                barrier often leads to isolation and reduced access to essential services for ASL users. This project
+                proposes a comprehensive robotic system that bridges this gap through a tendon-driven robotic hand
+                capable of both generating and interpreting ASL letters.</p>
 
-    <p>In the Speech-to-ASL module, spoken input is captured and denoised using Fast Fourier Transform (FFT) techniques before being processed by OpenAI's Whisper AI model for accurate speech-to-text conversion. Each letter of the recognized text is then mapped to its corresponding ASL sign, with the robotic hand's servo motors positioned through forward kinematics to accurately replicate the gestures. The Text-to-ASL feature operates similarly, directly converting typed input into a sequence of ASL gestures by computing the servo positions for each letter.</p>
+            <p>In the Speech-to-ASL module, spoken input is captured and denoised using Fast Fourier Transform (FFT)
+                techniques before being processed by OpenAI's Whisper AI model for accurate speech-to-text conversion.
+                Each letter of the recognized text is then mapped to its corresponding ASL sign, with the robotic hand's
+                servo motors positioned through forward kinematics to accurately replicate the gestures. The Text-to-ASL
+                feature operates similarly, directly converting typed input into a sequence of ASL gestures by computing
+                the servo positions for each letter.</p>
 
-    <p>Additionally, the Hand Mimicry function uses real-time camera input to detect and recognize ASL gestures performed by a human, which are then mirrored by the robotic hand to create an interactive and educational communication tool.</p>
+            <p>Additionally, the Hand Mimicry function uses real-time camera input to detect and recognize ASL gestures
+                performed by a human, which are then mirrored by the robotic hand to create an interactive and
+                educational communication tool.</p>
 
-    <p>By combining advanced audio processing, machine learning, and robotics, this project aims to break down communication barriers and promote accessibility, demonstrating the potential of assistive technology in fostering human connection through sign language.</p>
-  </section>
+            <p>By combining advanced audio processing, machine learning, and robotics, this project aims to break down
+                communication barriers and promote accessibility, demonstrating the potential of assistive technology in
+                fostering human connection through sign language.</p>
+        </section>
 
         <section id="toc" class="slide-in">
             <div class="section-icon"><i class="fas fa-list"></i></div>
             <h2>2. Table of Contents</h2>
             <nav>
                 <ul>
-                    <li><a href="#abstract"><i class="fas fa-chevron-right"></i> 1. Abstract</a></li>
-                    <li><a href="#toc"><i class="fas fa-chevron-right"></i> 2. Table of Contents</a></li>
-                    <li><a href="#introduction"><i class="fas fa-chevron-right"></i> 3. Introduction</a></li>
-                    <li><a href="#literature"><i class="fas fa-chevron-right"></i> 4. Literature Review / Related Work</a></li>
-                    <li><a href="#methodology"><i class="fas fa-chevron-right"></i> 5. Methodology & Implementation</a></li>
-                    <li><a href="#results"><i class="fas fa-chevron-right"></i> 6. Results and Discussion</a></li>
-                    <li><a href="#demo"><i class="fas fa-chevron-right"></i> 7. Demo of Simulation and Hardware</a></li>
-                    <li><a href="#conclusion"><i class="fas fa-chevron-right"></i> 8. Conclusion and Future Work</a></li>
-                    <li><a href="#references"><i class="fas fa-chevron-right"></i> 9. References</a></li>
+                    <li><a href="#introduction"><i class="fas fa-chevron-right"></i> 1. Introduction</a></li>
+                    <li><a href="#literature"><i class="fas fa-chevron-right"></i> 2. Literature Review / Related
+                            Work</a></li>
+                    <li><a href="#methodology"><i class="fas fa-chevron-right"></i> 3. Methodology & Implementation</a>
+                    </li>
+                    <li><a href="#results"><i class="fas fa-chevron-right"></i> 4. Results and Discussion</a></li>
+                    <li><a href="#demo"><i class="fas fa-chevron-right"></i> 5. Demo of Simulation and Hardware</a></li>
+                    <li><a href="#conclusion"><i class="fas fa-chevron-right"></i> 6. Conclusion and Future Work</a>
+                    </li>
+                    <li><a href="#references"><i class="fas fa-chevron-right"></i> 7. References</a></li>
                 </ul>
             </nav>
         </section>
@@ -193,25 +215,42 @@
         <section id="introduction" class="slide-in">
             <div class="section-icon"><i class="fas fa-info-circle"></i></div>
             <h2>3. Introduction</h2>
-            <p>Communication is not only a fundamental human need but also a bridge to education, employment, healthcare, and social inclusion. For individuals who are deaf or hard-of-hearing, American Sign Language (ASL) serves as a critical tool for daily interaction. However, the use of ASL is not widespread among the general population, often leading to miscommunication and social exclusion for ASL users. This disparity becomes even more apparent in time-critical environments such as hospitals, classrooms, or customer service settings where interpreters are not always available. Bridging this gap requires the fusion of intelligent systems with human communication modalities.
+            <p>Communication is a basic need in everyday life. But people who use sign language often face problems when
+                others don’t understand it. Our project aims to solve this by building a robotic hand that can show
+                American Sign Language (ASL) letters when someone speaks.</p>
+            <p>Communication is fundamental to human interaction, yet millions of individuals in the Deaf and Hard of
+                Hearing (DHH) community face barriers due to the lack of real-time, inclusive translation tools.
+                American Sign Language (ASL), a primary mode of communication among DHH individuals, is not universally
+                understood by the general population, leading to communication gaps in everyday interactions. Our
+                project aims to address this issue by developing an intelligent, tendon-driven robotic hand capable of
+                translating spoken English into ASL alphabet gestures.</p>
+            <p>By integrating advancements in speech recognition, gesture synthesis, and robotics, the proposed system
+                enables a seamless interaction bridge between hearing and non-hearing communities. The system utilizes
+                speech-to-text processing (via Whisper model), inverse kinematics for joint actuation, and optimization
+                algorithms to precisely position the robotic hand's fingers using tendon-driven mechanisms. Through this
+                multi-disciplinary approach, the robotic hand translates spoken input into ASL letters in real time.</p>
 
-Recent developments in robotics, computer vision, and speech recognition have opened up new possibilities for building assistive systems that can understand and reproduce sign language. This project presents a multi-functional, tendon-driven robotic hand that acts as a bidirectional ASL translator. The system is designed not only to generate ASL signs based on spoken or typed input but also to recognize hand gestures shown by a user and map them to corresponding ASL alphabets.
-
-The robotic hand is actuated using servos connected to tendons that emulate human finger flexion.
-
-</p>
+            <p>These motions are guided by a combination of forward kinematics and L-BFGS-B-based optimization, ensuring
+                high accuracy in gesture replication.</p>
             <blockquote>
                 <b><big> The system architecture comprises four core features:</b></big>
                 <br>
                 <br>
                 <ol>
-                <li>ASL Alphabet Display: A user can input a character or word, and the hand will animate the corresponding ASL letter using predefined tendon configurations.</li>
+                    <li>ASL Alphabet Display: A user can input a character or word, and the hand will animate the
+                        corresponding ASL letter using predefined tendon configurations.</li>
 
-                <li>Speech to Text to ASL: Using Whisper for high-accuracy transcription, coupled with FFT-based voice activity detection, the system captures live speech, processes it into text, and decomposes it into ASL alphabet animations.</li>
+                    <li>Speech to Text to ASL: Using Whisper for high-accuracy transcription, coupled with FFT-based
+                        voice activity detection, the system captures live speech, processes it into text, and
+                        decomposes it into ASL alphabet animations.</li>
 
-                <li>Gesture Mimicry: With MediaPipe’s real-time hand landmark detection, the system extracts 3D joint angles from a user’s hand shown in front of a webcam and replicates the gesture using inverse kinematics on the robot.</li>
+                    <li>Gesture Mimicry: With MediaPipe’s real-time hand landmark detection, the system extracts 3D
+                        joint angles from a user’s hand shown in front of a webcam and replicates the gesture using
+                        inverse kinematics on the robot.</li>
 
-                <li>ASL Recognition via Machine Learning: A Random Forest classifier is trained to recognize ASL letters from joint angles extracted from MediaPipe, allowing the robot to interpret what letter the user is signing.</li>
+                    <li>ASL Recognition via Machine Learning: A Random Forest classifier is trained to recognize ASL
+                        letters from joint angles extracted from MediaPipe, allowing the robot to interpret what letter
+                        the user is signing.</li>
                 </ol>
             </blockquote>
         </section>
@@ -219,25 +258,39 @@ The robotic hand is actuated using servos connected to tendons that emulate huma
         <section id="literature" class="slide-in">
             <div class="section-icon"><i class="fas fa-book"></i></div>
             <h2>4. Literature Review / Related Work</h2>
-            <p>Present your literature review and related work here. Discuss previous research and establish the theoretical framework for your study.</p>
-            <table>
+            <table border="1" cellpadding="10" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>Author</th>
-                        <th>Year</th>
-                        <th>Key Findings</th>
+                        <th>Title</th>
+                        <th>Technique</th>
+                        <th>Key Idea (in simple words)</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Author 1</td>
-                        <td>2023</td>
-                        <td>Key finding description</td>
+                        <td>Joint-Space Torque and Stiffness Control (IROS – Abdallah et al.)</td>
+                        <td>Uses joint-space control instead of tendon-space, and a tension algorithm that avoids
+                            complex calculations</td>
+                        <td>This method gives faster and better finger movements by directly controlling the joints. It
+                            also keeps tendon forces within safe limits without using heavy math.</td>
                     </tr>
                     <tr>
-                        <td>Author 2</td>
-                        <td>2022</td>
-                        <td>Key finding description</td>
+                        <td>Calibration of Human Hand using CyberGlove (ASME IMECE 2000 – Griffin et al.)</td>
+                        <td>Calibrates human hand using glove and maps it to robot hand using object-based control</td>
+                        <td>This helps match a human hand's actions with a robot hand using simple tools, so the robot
+                            hand copies the user's pinch and grip more accurately.</td>
+                    </tr>
+                    <tr>
+                        <td>System Identification with L-BFGS-B (IEEE Transactions – Bemporad, 2025)</td>
+                        <td>Used L-BFGS-B optimization with group sparsity for better model learning</td>
+                        <td>This improves the robot's movement accuracy by finding good models with fewer calculations.
+                            It is useful for systems like ours that rely on precise motion.</td>
+                    </tr>
+                    <tr>
+                        <td>Tendon-Driven Robotic Hand for Tactile Sign Language (Thesis – Johnson, 2021)</td>
+                        <td>Used cloud-based ASL system with 17-DOA robotic hand</td>
+                        <td>This project helped Deaf-Blind users by converting ASL into hand movements using motors. It
+                            showed great accuracy and helped people understand words by touch.</td>
                     </tr>
                 </tbody>
             </table>
@@ -246,15 +299,116 @@ The robotic hand is actuated using servos connected to tendons that emulate huma
         <section id="methodology" class="slide-in">
             <div class="section-icon"><i class="fas fa-cogs"></i></div>
             <h2>Methodology</h2>
-        
+            hodology: Speech Energy Detection in Audio Chunks</h2>
+
+            <p>In this project, we focus on identifying speech presence within audio signals using signal processing
+                techniques. The methodology involves analyzing short chunks of audio and computing energy specifically
+                within the speech-relevant frequency band (85 Hz to 3800 Hz).</p>
+
+            <h3>1. Preprocessing and Framing</h3>
+            <p>The input audio is divided into small frames or chunks of fixed length, for example, 1024 samples per
+                frame. Each frame is processed individually.</p>
+
+            <h3>2. Apply Hanning Window</h3>
+            <p>To reduce spectral leakage caused by abrupt edges in audio chunks, we apply a Hanning window:</p>
+
+            <p>
+                \[
+                w(n) = 0.5 \left(1 - \cos\left(\frac{2\pi n}{N - 1}\right)\right)
+                \]
+            </p>
+
+            <p>Here, \( n \in [0, N-1] \) is the sample index within the chunk, and \( N \) is the number of samples in
+                the chunk. This window smoothly tapers the beginning and end of the chunk to zero, minimizing
+                discontinuities and improving the accuracy of the frequency domain representation.</p>
+
+            <h3>3. Windowed Signal</h3>
+            <p>Each audio frame \( x(n) \) is multiplied element-wise with the window function:</p>
+
+            <p>
+                \[
+                x_{\text{windowed}}(n) = x(n) \cdot w(n)
+                \]
+            </p>
+
+            <h3>4. Fast Fourier Transform (FFT)</h3>
+            <p>We then convert the windowed time-domain signal to the frequency domain using the Discrete Fourier
+                Transform, implemented efficiently via FFT:</p>
+
+            <p>
+                \[
+                X(f) = \sum_{n=0}^{N-1} x(n) \cdot e^{-j 2\pi fn / N}
+                \]
+            </p>
+
+            <p>This provides a frequency spectrum where each value \( X(f) \) represents the amplitude and phase of a
+                frequency component \( f \).</p>
+
+            <h3>5. Compute Magnitude Spectrum</h3>
+            <p>The magnitude of each frequency component is calculated as:</p>
+
+            <p>
+                \[
+                |X(f)| = \sqrt{\text{Re}(X(f))^2 + \text{Im}(X(f))^2}
+                \]
+            </p>
+
+            <p>This removes the phase component, leaving only the strength of the frequency components.</p>
+
+            <h3>6. Sum Energy in the Speech Band (85 Hz – 3800 Hz)</h3>
+            <p>We compute the total energy in the range of frequencies most relevant to human speech:</p>
+
+            <p>
+                \[
+                E_{\text{speech}} = \sum_{f=85}^{3800} |X(f)|
+                \]
+            </p>
+
+            <p>This step helps isolate the energy related to voiced speech, filtering out irrelevant background noise
+                such as very low rumble or high-frequency hiss.</p>
+
+            <h3>7. Voice Activity Detection (VAD)</h3>
+            <p>The computed energy is compared to a threshold to decide if speech is present in the chunk:</p>
+
+            <p>
+                \[
+                \text{If } E_{\text{speech}} > \text{Threshold, then Speech is Active}
+                \]
+            </p>
+
+            <h3>Why the Range 85–3800 Hz?</h3>
+            <p>This frequency band is based on the typical spectrum of human speech. Most vocal energy (especially
+                vowels and voiced consonants) lies in this range. Frequencies below 85 Hz usually contain environmental
+                noise, while those above 3800 Hz mostly include sibilance and high-frequency noise.</p>
+
+            <h3>Conclusion</h3>
+            <p>This approach enables reliable and efficient detection of speech activity by focusing on relevant
+                frequency components and minimizing noise. It is simple to implement and effective for real-time audio
+                processing.</p>
+
+            <h3>3.6 Hand Control Process</h3>
+            <ol>
+                <li>User speaks a word or sentence</li>
+                <li>Speech is converted to text</li>
+                <li>Each letter is converted into target finger positions</li>
+                <li>IK calculates pull → servo angle</li>
+                <li>Servo angle sent to Arduino</li>
+                <li>Fingers move and show the ASL letter</li>
+            </ol>
+
             <h3>1. System Integration and Testing</h3>
-            <p>All three modules — mechanical, computational, and control — were integrated into a unified control system. The robotic hand was tested across various scenarios, including both isolated American Sign Language (ASL) letters and continuous ASL gesture sequences.</p>
-        
+            <p>All three modules — mechanical, computational, and control — were integrated into a unified control
+                system. The robotic hand was tested across various scenarios, including both isolated American Sign
+                Language (ASL) letters and continuous ASL gesture sequences.</p>
+
             <h4>1.1 System Architecture and Hardware Design</h4>
-            <p>The robotic hand was engineered to imitate human finger movements using a tendon-driven actuation mechanism. Each finger consists of three segments, with motion generated by pulling tendons routed through these segments and attached to servo motors mounted at the base.</p>
+            <p>The robotic hand was engineered to imitate human finger movements using a tendon-driven actuation
+                mechanism. Each finger consists of three segments, with motion generated by pulling tendons routed
+                through these segments and attached to servo motors mounted at the base.</p>
             <ul>
                 <li>Servo horns with a radius of 1.4 cm convert rotational motion into linear tendon displacement.</li>
-                <li>The tendons wrap around these horns, enabling finger bending or straightening as the servo rotates.</li>
+                <li>The tendons wrap around these horns, enabling finger bending or straightening as the servo rotates.
+                </li>
             </ul>
             <strong>Key Hardware Components:</strong>
             <ul>
@@ -264,7 +418,7 @@ The robotic hand is actuated using servos connected to tendons that emulate huma
                 <li>External power supply for servo stability.</li>
                 <li>Tendon-routing system for precise articulation.</li>
             </ul>
-        
+
             <h4>1.2 Mathematical Modeling</h4>
             <p>A simplified kinematic model was implemented for accurate control of each finger.</p>
             <p><strong>Forward Kinematics (FK):</strong></p>
@@ -272,27 +426,29 @@ The robotic hand is actuated using servos connected to tendons that emulate huma
         P = Base + R(θ₁)l₁ + R(θ₁ + θ₂)l₂ + R(θ₁ + θ₂ + θ₃)l₃
             </pre>
             <p>Where θ₁, θ₂, θ₃ are joint angles, l₁, l₂, l₃ are segment lengths, and R(θ) is the rotation matrix.</p>
-        
+
             <p><strong>Inverse Kinematics (IK):</strong></p>
             <pre>
         minₚ || FK(p) - Pₜₐᵣget ||
             </pre>
             <p>The solution minimizes positional error using Python’s <code>scipy.optimize.minimize</code>.</p>
-        
+
             <h4>1.3 Pull to Servo Angle Conversion</h4>
             <pre>
         θₛₑᵣᵥₒ = (p × 360) / (2πr)
             </pre>
             <p>Where p is tendon pull length and r = 1.4 cm (servo horn radius).</p>
-        
+
             <h4>1.4 Simulation and Visualization</h4>
-            <p>Python-based simulation validated the system before hardware use. Matplotlib displayed finger positions; sliders and text inputs adjusted and solved IK problems interactively.</p>
-        
+            <p>Python-based simulation validated the system before hardware use. Matplotlib displayed finger positions;
+                sliders and text inputs adjusted and solved IK problems interactively.</p>
+
             <h4>1.5 Arduino Control System</h4>
-            <p>Arduino Mega received servo angles via serial and adjusted PWM signals in real-time for accurate finger motion.</p>
-        
+            <p>Arduino Mega received servo angles via serial and adjusted PWM signals in real-time for accurate finger
+                motion.</p>
+
             <h3>2. Speech-to-ASL Translation</h3>
-        
+
             <h4>2.1 Audio Capture and Denoising</h4>
             <ul>
                 <li>Microphone captures voice with ambient noise.</li>
@@ -300,7 +456,7 @@ The robotic hand is actuated using servos connected to tendons that emulate huma
                 <li>VAD identifies speech segments.</li>
                 <li>Whisper AI transcribes audio into text.</li>
             </ul>
-        
+
             <h4>2.2 Text-to-ASL Mapping</h4>
             <ul>
                 <li>Transcribed text decomposed into characters.</li>
@@ -308,33 +464,34 @@ The robotic hand is actuated using servos connected to tendons that emulate huma
                 <li>Forward Kinematics computes servo positions.</li>
                 <li>Arduino executes hand movements.</li>
             </ul>
-        
+
             <h3>3. Text-to-ASL Translation</h3>
-        
+
             <h4>3.1 Text Input</h4>
             <p>Users input text via serial or GUI interface.</p>
-        
+
             <h4>3.2 ASL Gesture Mapping</h4>
             <p>Each character matches a predefined ASL gesture.</p>
-        
+
             <h4>3.3 Servo Position Calculation</h4>
             <p>Forward Kinematics calculates joint angles.</p>
-        
+
             <h4>3.4 Gesture Execution</h4>
             <p>Arduino sends PWM signals for ASL gestures letter by letter.</p>
-        
+
             <h3>4. Hand Mimicry</h3>
-        
+
             <h4>4.1 Gesture Capture</h4>
             <p>Camera records real-time human ASL gestures.</p>
-        
+
             <h4>4.2 Gesture Recognition</h4>
             <p>Computer Vision and Machine Learning classify gestures.</p>
-        
+
             <h4>4.3 Gesture Replication</h4>
-            <p>Recognized gestures are translated into servo positions and mimicked by the robotic hand in real-time.</p>
+            <p>Recognized gestures are translated into servo positions and mimicked by the robotic hand in real-time.
+            </p>
         </section>
-        
+
 
         <section id="results" class="slide-in">
             <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
@@ -345,7 +502,8 @@ The robotic hand is actuated using servos connected to tendons that emulate huma
         <section id="demo" class="slide-in">
             <div class="section-icon"><i class="fas fa-desktop"></i></div>
             <h2>7. Demo of Simulation and Hardware</h2>
-            <p>Include demonstrations of your simulations and/or hardware implementations here. You can add images, videos, or interactive elements.</p>
+            <p>Include demonstrations of your simulations and/or hardware implementations here. You can add images,
+                videos, or interactive elements.</p>
         </section>
 
         <section id="conclusion" class="slide-in">
@@ -371,12 +529,12 @@ The robotic hand is actuated using servos connected to tendons that emulate huma
 
     <script>
         // Scroll progress bar
-        window.onscroll = function() {
+        window.onscroll = function () {
             let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             let scrolled = (winScroll / height) * 100;
             document.querySelector(".progress-bar").style.width = scrolled + "%";
-            
+
             // Show/hide scroll-to-top button
             let scrollBtn = document.querySelector(".scroll-top-btn");
             if (winScroll > 300) {
@@ -387,7 +545,7 @@ The robotic hand is actuated using servos connected to tendons that emulate huma
         };
 
         // Smooth scroll to top
-        document.querySelector(".scroll-top-btn").addEventListener("click", function() {
+        document.querySelector(".scroll-top-btn").addEventListener("click", function () {
             window.scrollTo({
                 top: 0,
                 behavior: "smooth"
@@ -421,4 +579,5 @@ The robotic hand is actuated using servos connected to tendons that emulate huma
         });
     </script>
 </body>
+
 </html>
